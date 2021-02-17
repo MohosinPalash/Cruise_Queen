@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cruise Queen: Ticket Booking</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+
+<body>
+    <!--Header and Menu Section-->
+    <header class="container">
+        <nav>
+            <ul>
+                <li><a class="active" href="#">Home</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!--Booking Section-->
+    <main class="main-content container">
+
+        <div class="booking-content">
+            <h1>Cruise Queen</h1>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book./p>
+            <br>
+            <br>
+            <br>
+            <p><span id="toastMsg" style="color: white; padding: 10px; background-color: black;"></span></p>
+        </div>
+
+
+
+        <div class="booking-form">
+            <h3>Book Ocean Time</h3>
+            <div class="input-group">
+                <label for="">Leaving From</label>
+                <input id="leaving_from_input" class="inp-style" type="text" name="" placeholder="Dhaka, Bangladesh">
+            </div>
+            <div class="input-group">
+                <label for="">Going To</label>
+                <input id="going_to_input" class="inp-style" type="text" name="" placeholder="Barishal, Bangladesh">
+            </div>
+            <div class="inputs">
+                <div class="input-group">
+                    <label" for="">Departure</label>
+                    <input id="departure_date_input"class="inp-style" type="date" name="">
+                </div>
+                <div class="input-group">
+                    <label for="">Return</label>
+                    <input id="return_date_input"class="inp-style" type="date" name="">
+                </div>
+            </div>
+            <div class="input-group f-class">
+                <div>
+                    <label for="">First Class ($150)</label>
+                    <input id="first_class_seat" class="inp-style inp-width" type="text" name="" placeholder="0">
+                </div>
+                <div class="plus-minus-btn">
+                    <button onclick="amountCalculation(true, true, 150)" id="firstClass_increase_btn" type="button" class="btn btn-dark">+</button>
+                    <button onclick="amountCalculation(true, false, 150)" id="firstClass_decrease_btn" type="button" class="btn btn-dark">-</button>
+                    <!-- <p>+ -</p> -->
+                </div>
+            </div>
+            
+            <div class="input-group f-class">
+                <div>
+                    <label for="">Economy ($100)</label>
+                    <input id="economy_class_seat" class="inp-style inp-width" type="text" name="" placeholder="0">
+                </div>
+                <div class="plus-minus-btn">
+                    <button onclick="amountCalculation(false, true, 100)" id="economyClass_increase_btn" type="button" class="btn btn-dark">+</button>
+                    <button onclick="amountCalculation(false, false, 100)" id="economyClass_decrease_btn" type="button" class="btn btn-dark">-</button>
+                </div>
+            </div>
+            <div class="calculations">
+                <div class="amount">
+                    <div class="left">
+                        <p>Subtotal</p>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="subtotal_amount">00</span> </p>
+                    </div>
+                </div>
+
+                <div class="amount">
+                    <div class="left">
+                        <p>Charge 10% VAT</p>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="vat_amount">00</span> </p>
+                    </div>
+                </div>
+                <hr>
+                <div class="amount">
+                    <div class="left">
+                        <h4>Total</h4>
+                    </div>
+                    <div class="right">
+                        <p>$ <span id="total_amount">00</span> </p>
+                    </div>
+                </div>
+            </div>
+            <button onclick="bookNow()" id="booking_btn" class="btn-style">Book Now</button>
+        </div>
+        
+
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <script>
+        
+        var firstClassTickets = stringToFloatForInputField("first_class_seat");
+        var economyClassTickets = stringToFloatForInputField("economy_class_seat");
+
+        var subtotalAmount = stringToFloatForTextField("subtotal_amount");
+        var vatAmount = stringToFloatForTextField("vat_amount");
+        var totalAmount = stringToFloatForTextField("total_amount");
+
+        //To convert string to float data received from INPUT tag
+        function stringToFloatForInputField(id){
+            var stringNum = document.getElementById(id).value;
+            if(stringNum=="")
+                stringNum="0";
+            const num = parseFloat(stringNum);
+            return num;
+        }
+
+        //To convert string to float data received from PARAGRAPH tag
+        function stringToFloatForTextField(id){
+            const stringNum = document.getElementById(id).innerText;
+            const num = parseFloat(stringNum);
+            return num;
+        }
+
+        //To show the values in the INPUT tag and PARAGRAPH tag
+        function showOutput(type, ID, val){
+            if(type == "inputField")
+                document.getElementById(ID).value = val;
+            else if (type == "textField")
+                document.getElementById(ID).innerText = val;
+        }
+
+        //To update and calculate the total fair of the tickets
+        function amountCalculation(isFirstClass, isIncrease, unitPrice){
+            
+            if(isFirstClass == true && isIncrease == true){
+                
+                firstClassTickets++;
+                subtotalAmount+=unitPrice;
+                vatAmount = subtotalAmount*0.1;
+                totalAmount = subtotalAmount + vatAmount;
+
+                showOutput("inputField","first_class_seat", firstClassTickets);
+                showOutput("textField", "subtotal_amount", subtotalAmount);
+                showOutput("textField", "vat_amount", vatAmount);
+                showOutput("textField", "total_amount", totalAmount);
+
+            }else if(isFirstClass == true && isIncrease == false){
+                
+                if(firstClassTickets>0){
+                    
+                    firstClassTickets--;
+                    subtotalAmount-=unitPrice;
+                    vatAmount = subtotalAmount*0.1;
+                    totalAmount = subtotalAmount + vatAmount;
+
+                    showOutput("inputField","first_class_seat", firstClassTickets);
+                    showOutput("textField", "subtotal_amount", subtotalAmount);
+                    showOutput("textField", "vat_amount", vatAmount);
+                    showOutput("textField", "total_amount", totalAmount);
+                    console.log("- clicked");
+                }
+                
+            }else if(isFirstClass == false && isIncrease == true){
+                
+                economyClassTickets++;
+                subtotalAmount+=unitPrice;
+                vatAmount = subtotalAmount*0.1;
+                totalAmount = subtotalAmount + vatAmount;
+
+                showOutput("inputField","economy_class_seat", economyClassTickets);
+                showOutput("textField", "subtotal_amount", subtotalAmount);
+                showOutput("textField", "vat_amount", vatAmount);
+                showOutput("textField", "total_amount", totalAmount);
+
+            }else if(isFirstClass == false && isIncrease == false){
+                
+                if(economyClassTickets>0){
+                    
+                    economyClassTickets--;
+                    subtotalAmount-=unitPrice;
+                    vatAmount = subtotalAmount*0.1;
+                    totalAmount = subtotalAmount + vatAmount;
+                    
+                    showOutput("inputField","economy_class_seat", economyClassTickets);
+                    showOutput("textField", "subtotal_amount", subtotalAmount);
+                    showOutput("textField", "vat_amount", vatAmount);
+                    showOutput("textField", "total_amount", totalAmount);
+                    console.log("- clicked");
+                }
+                
+            }
+            
+        }
+
+        //To confirm the purchase
+        function bookNow(){
+            var leavingFrom = document.getElementById("leaving_from_input").value;
+            var goingTo = document.getElementById("going_to_input").value;
+        
+            var departureDate = document.getElementById("departure_date_input").value;
+            var returnDate = document.getElementById("return_date_input").value;
+
+            var message = "Your Ticket Description:\n"
+                            +leavingFrom+" to "+goingTo+" on "+departureDate
+                            +"\nFirst Class : "+firstClassTickets+" seat(s) "
+                            +"\nEconomy Class : "+economyClassTickets+" seat(s) "
+                            +"\nTotal Fare: $ "+totalAmount
+                            +"\nDo you want to confirm?";
+            var confirmBox = confirm(message);
+            if(confirmBox == true){
+                document.getElementById("toastMsg").innerText = "Order received successfully. Thank you!"
+                clearAllField();
+            }else{
+                document.getElementById("toastMsg").innerText = "Order has been cancelled."
+                clearAllField();
+            }
+        }
+
+        // To blank all the data fields
+        function clearAllField(){
+            document.getElementById("leaving_from_input").value = "";
+            document.getElementById("going_to_input").value = "";
+            document.getElementById("departure_date_input").value = "";
+            document.getElementById("return_date_input").value = "";
+            document.getElementById("first_class_seat").value = "";
+            document.getElementById("economy_class_seat").value = "";
+            document.getElementById("subtotal_amount").innerText = "00";
+            document.getElementById("vat_amount").innerText = "00";
+            document.getElementById("total_amount").innerText = "00";
+        }
+
+    </script>
+    <!--Thank You-->
+</body>
+
+</html>
